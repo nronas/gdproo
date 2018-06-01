@@ -1,18 +1,13 @@
 require_relative 'tree_builder'
 
 module Gdproo
-  ROOTS = {
-    riders: {
-      rider_domain: 'Rider'
-    }
-  }.freeze
-
   class Auditer
-    def initialize(entity, service)
+    def initialize(entity, service, audit_map)
       @entity = entity
       @service = service
       @lines = []
       @tree_builder = TreeBuilder.new
+      @audit_map = audit_map
     end
 
     def audit(id:)
@@ -34,7 +29,7 @@ module Gdproo
     end
 
     def build_tree(id)
-      root = ROOTS.dig(@entity.to_sym, @service.to_sym)
+      root = @audit_map.dig(@entity.to_sym, @service.to_sym)
 
       if root
         @tree_builder.build(root, id)

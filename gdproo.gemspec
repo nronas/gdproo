@@ -6,8 +6,8 @@ require "gdproo/version"
 Gem::Specification.new do |spec|
   spec.name          = "gdproo"
   spec.version       = Gdproo::VERSION
-  spec.authors       = ["riders"]
-  spec.email         = ["john.tzikas@deliveroo.co.uk"]
+  spec.authors       = ["nronas"]
+  spec.email         = [""]
 
   spec.summary       = %q{This gem supports consent declariation for GDPR on Ruby apps}
   spec.description   = %q{This gem supports consent declariation for GDPR on Ruby apps}
