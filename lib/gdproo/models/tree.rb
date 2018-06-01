@@ -23,6 +23,10 @@ module Gdproo
     def resource
       @data[@name][:resource]
     end
+
+    def skipped?
+      @data[@name][:skip]
+    end
   end
 
   class Tree

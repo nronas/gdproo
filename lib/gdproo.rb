@@ -7,8 +7,11 @@ module Gdproo
   extend ActiveSupport::Concern
 
   class_methods do
-    def consent_relations(has_one: [], has_many: [])
-      Storage.instance.insert_relation(self.to_s, has_many: has_many, has_one: has_one)
+    def consent_relations(has_one: [], has_many: [], skip: false)
+      Storage.instance.insert_relation(self.to_s,
+                                       has_many: has_many,
+                                       has_one: has_one,
+                                       skip: skip)
     end
 
     def consent(name:, field:, description:)

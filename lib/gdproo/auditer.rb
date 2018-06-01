@@ -16,11 +16,19 @@ module Gdproo
       tree.dfs do |node|
         if node.children.empty?
           @lines += node.fields.map do |field|
-            "#{node.prefix}#{node.name.downcase}.#{node.resource.id}.#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+            if node.skipped?
+              "#{node.prefix}#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+            else
+              "#{node.prefix}#{node.name.downcase}.#{node.resource.id}.#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+            end
           end
         else
           node.children.each do |child|
-            child.prefix += "#{node.name.downcase}.#{node.resource.id}."
+            if node.skipped?
+              child.prefix += node.prefix
+            else
+              child.prefix += "#{node.name.downcase}.#{node.resource.id}."
+            end
           end
         end
       end
