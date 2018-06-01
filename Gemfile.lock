@@ -1,0 +1,41 @@
+PATH
+  remote: .
+  specs:
+    gdproo (0.1.0)
+      activesupport
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (3.2.22.8)
+      i18n (~> 0.6, >= 0.6.4)
+      multi_json (~> 1.0)
+    diff-lcs (1.2.5)
+    i18n (0.7.0)
+    multi_json (1.13.1)
+    rake (10.4.2)
+    rspec (3.4.0)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
+    rspec-core (3.4.4)
+      rspec-support (~> 3.4.0)
+    rspec-expectations (3.4.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-mocks (3.4.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-support (3.4.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.16)
+  gdproo!
+  rake (~> 10.0)
+  rspec (~> 3.0)
+
+BUNDLED WITH
+   1.16.2
