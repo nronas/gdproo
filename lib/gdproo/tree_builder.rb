@@ -28,7 +28,7 @@ module Gdproo
         parent_resource = node.dig(node.keys.first, :resource)
 
         (has_one + has_many).each do |_node|
-          normalized_name = _node.to_s.singularize.camelize.constantize.to_s
+          normalized_name = parent_resource.class.reflect_on_association(_node).class_name
           new_node = @storage.slice(normalized_name)
           Array(parent_resource.send(_node)).each do |node_resource|
             node_to_be_added = new_node.deep_dup
