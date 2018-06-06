@@ -13,7 +13,8 @@ module Gdproo
     end
 
     def <=>(node)
-      self.name <=> node.name
+      self.name <=> node.name &&
+        self.resource <=> node.resource
     end
 
     def fields
