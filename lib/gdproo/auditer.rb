@@ -21,7 +21,7 @@ module Gdproo
             if node.skipped?
               res << "#{node.prefix}#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
             else
-              res << "#{node.prefix}#{node.name.downcase}.#{node.resource.id}.#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+              res << "#{node.prefix}#{node.name.split('::').last.underscore}.#{node.resource.id}.#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
             end
           end
         end
