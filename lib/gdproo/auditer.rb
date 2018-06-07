@@ -30,7 +30,7 @@ module Gdproo
           child.prefix += node.prefix
 
           unless node.skipped?
-            child.prefix += "#{node.name.downcase}.#{node.resource.id}."
+            child.prefix += "#{node.name.split('::').last.underscore}.#{node.resource.id}."
           end
         end
       end
