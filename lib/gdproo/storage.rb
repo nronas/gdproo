@@ -29,7 +29,7 @@ module Gdproo
         has_one: [],
         has_many: [],
         fields: [],
-        skip: false
+        skip: false,
       }
     end
   end
