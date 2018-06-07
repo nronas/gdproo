@@ -14,21 +14,23 @@ module Gdproo
       tree = build_tree(id)
 
       tree.dfs do |node|
-        if node.children.empty?
-          @lines += node.fields.map do |field|
+        if node.children.empty? || node.fields.present?
+          @lines += node.fields.inject([]) do |res, field|
+            next res if node.resource.send(field[:accessor]).blank?
+
             if node.skipped?
-              "#{node.prefix}#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+              res << "#{node.prefix}#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
             else
-              "#{node.prefix}#{node.name.downcase}.#{node.resource.id}.#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+              res << "#{node.prefix}#{node.name.downcase}.#{node.resource.id}.#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
             end
           end
-        else
-          node.children.each do |child|
-            if node.skipped?
-              child.prefix += node.prefix
-            else
-              child.prefix += "#{node.name.downcase}.#{node.resource.id}."
-            end
+        end
+
+        node.children.each do |child|
+          if node.skipped?
+            child.prefix += node.prefix
+          else
+            child.prefix += "#{node.name.downcase}.#{node.resource.id}."
           end
         end
       end
