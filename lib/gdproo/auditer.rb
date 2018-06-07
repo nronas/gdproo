@@ -27,9 +27,9 @@ module Gdproo
         end
 
         node.children.each do |child|
-          if node.skipped?
-            child.prefix += node.prefix
-          else
+          child.prefix += node.prefix
+
+          unless node.skipped?
             child.prefix += "#{node.name.downcase}.#{node.resource.id}."
           end
         end

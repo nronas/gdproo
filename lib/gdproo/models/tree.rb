@@ -3,7 +3,8 @@ require 'thread'
 module Gdproo
   class Node
     include Comparable
-    attr_accessor :data, :children, :name, :prefix
+
+    attr_accessor :data, :children, :name, :prefix, :root
 
     def initialize(data: {})
       @data = data
