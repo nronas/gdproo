@@ -5,12 +5,11 @@ require_relative 'models/tree'
 module Gdproo
   class TreeBuilder
     def initialize
-      @storage = Storage.instance
       @tree = Tree.new
     end
 
     def build(model, id)
-      root = @storage.slice(model)
+      root = storage.slice(model)
       resource = root.keys.first.constantize.find(id)
       raise "Failed to build tree for #{model}" if root.nil?
 
@@ -29,7 +28,8 @@ module Gdproo
 
         (has_one + has_many).each do |_node|
           normalized_name = parent_resource.class.reflect_on_association(_node).class_name
-          new_node = @storage.slice(normalized_name)
+          normalized_name.constantize
+          new_node = storage.slice(normalized_name)
           Array(parent_resource.send(_node)).each do |node_resource|
             node_to_be_added = new_node.deep_dup
             node_to_be_added[node_to_be_added.keys.first][:resource] = node_resource
@@ -40,6 +40,10 @@ module Gdproo
       end
 
       @tree
+    end
+
+    def storage
+      Storage.instance
     end
   end
 end

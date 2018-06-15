@@ -1,6 +1,5 @@
 require 'gdproo/version'
 require 'gdproo/storage'
-require 'gdproo/auditer'
 require 'active_support/all'
 
 module Gdproo
