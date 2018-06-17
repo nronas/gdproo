@@ -20,6 +20,7 @@ module Gdproo
       @tree.add(root, nil)
 
       while !to_visit.empty? do
+        puts "Processing node: #{_node}"
         node = to_visit.pop
         visited << node
         has_many = node.dig(node.keys.first, :has_many)
@@ -27,7 +28,7 @@ module Gdproo
         parent_resource = node.dig(node.keys.first, :resource)
 
         (has_one + has_many).each do |_node|
-          puts "Crawling: #{_node}"
+          puts "Generate child nodes for: #{_node}"
           normalized_name = parent_resource.class.reflect_on_association(_node).class_name
           normalized_name.constantize
           new_node = storage.slice(normalized_name)
