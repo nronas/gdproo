@@ -27,6 +27,7 @@ module Gdproo
         parent_resource = node.dig(node.keys.first, :resource)
 
         (has_one + has_many).each do |_node|
+          puts "Crawling: #{_node}"
           normalized_name = parent_resource.class.reflect_on_association(_node).class_name
           normalized_name.constantize
           new_node = storage.slice(normalized_name)
