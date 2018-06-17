@@ -10,10 +10,7 @@ module Gdproo
     sidekiq_options queue: :gdpr
 
     def perform(id, type, report_id)
-      lines = Gdproo::Auditer
-        .new(type, :rider_domain, { riders: { rider_domain: 'Rider' } })
-        .audit(id: id)
-
+      # Invoce auditer
       batch = Sidekiq::Batch.new
       batch.description = "Processing GDPR subject access request"
       batch.on(:complete, Callbacks::AccessRequest, id: id, type: type, report_id: report_id)
