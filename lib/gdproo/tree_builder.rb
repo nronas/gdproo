@@ -20,8 +20,8 @@ module Gdproo
       @tree.add(root, nil)
 
       while !to_visit.empty? do
-        puts "Processing node: #{_node}"
         node = to_visit.pop
+        puts "Processing node: #{node}"
         visited << node
         has_many = node.dig(node.keys.first, :has_many)
         has_one = node.dig(node.keys.first, :has_one)
