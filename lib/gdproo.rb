@@ -5,7 +5,11 @@ require 'active_support/all'
 module Gdproo
   extend ActiveSupport::Concern
 
-  class_methods do
+  def self.included base
+    base.extend ClassMethods
+  end
+
+  module ClassMethods
     def consent_relations(has_one: [], has_many: [], skip: false)
       Storage.instance.insert_relation(self.to_s,
                                        has_many: has_many,
