@@ -15,15 +15,17 @@ module Gdproo
 
       tree.dfs do |node|
         if node.children.empty? || node.fields.present?
+          @lines += [['', '', '']]
           @lines += node.fields.inject([]) do |res, field|
             next res if node.resource.send(field[:accessor]).blank?
 
             if node.skipped?
-              res << "#{node.prefix}#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+              res << ["#{node.prefix}#{field[:name]}", node.resource.send(field[:accessor]).to_s, field[:description]]
             else
-              res << "#{node.prefix}#{node.name.split('::').last.underscore}.#{node.resource.id}.#{field[:name]},#{node.resource.send(field[:accessor])},#{field[:description]}"
+              res << ["#{node.prefix}#{node.name.split('::').last.underscore}.#{node.resource.id}.#{field[:name]}", node.resource.send(field[:accessor]).to_s, field[:description]]
             end
           end
+          @lines += [['', '', '']]
         end
 
         node.children.each do |child|
