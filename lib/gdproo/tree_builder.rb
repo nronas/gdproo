@@ -29,7 +29,7 @@ module Gdproo
 
         has_one.each do |_node|
           puts "Generate child nodes for: #{_node}"
-          normalized_name = parent_resource.class.reflect_on_association(_node)&.class_name || _node.camelize
+          normalized_name = parent_resource.class.reflect_on_association(_node.to_sym)&.class_name || _node.to_s.camelize
           normalized_name.constantize
           new_node = storage.slice(normalized_name)
           node_resource = parent_resource.send(_node)
@@ -41,7 +41,7 @@ module Gdproo
 
         has_many.each do |_node|
           puts "Generate child nodes for: #{_node}"
-          normalized_name = parent_resource.class.reflect_on_association(_node).class_name || _node.camelize
+          normalized_name = parent_resource.class.reflect_on_association(_node.to_sym).class_name || _node.to_s.camelize
           normalized_name.constantize
           new_node = storage.slice(normalized_name)
           parent_resource.send(_node).find_in_batches(batch_size: 100) do |batch|
