@@ -2,12 +2,10 @@ require_relative 'tree_builder'
 
 module Gdproo
   class Auditer
-    def initialize(entity, service, audit_map)
+    def initialize(entity)
       @entity = entity
-      @service = service
       @lines = []
       @tree_builder = TreeBuilder.new
-      @audit_map = audit_map
     end
 
     def audit(id:)
@@ -41,12 +39,10 @@ module Gdproo
     end
 
     def build_tree(id)
-      root = @audit_map.dig(@entity.to_sym, @service.to_sym)
-
-      if root
-        @tree_builder.build(root, id)
+      if @entity
+        @tree_builder.build(@entity, id)
       else
-        raise 'Unsupported service or entity'
+        raise 'Unsupported entity'
       end
     end
   end
