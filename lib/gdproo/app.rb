@@ -8,12 +8,29 @@ module Gdproo
     end
 
     def enable_mappigs(builder)
+      builder.use GdprAuth do |username, password|
+        username == ENV['GDPR_CLIENT_USERNAME'] &&
+          password == ENV['GDPR_CLIENT_PASSWORD']
+      end
+
       builder.map '/legal_hold_deletion' do
         run LegalHoldDeletion.new
       end
 
       builder.map '/access_request' do
         run AccessRequest.new
+      end
+    end
+
+    class GdprAuth < Rack::Auth::Basic
+      def call(env)
+        request = Rack::Request.new(env)
+        case request.path
+        when '/legal_hold_deletion', '/access_request'
+          super
+        else
+          @app.call(env)
+        end
       end
     end
 

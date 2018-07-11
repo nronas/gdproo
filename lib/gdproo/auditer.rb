@@ -15,7 +15,7 @@ module Gdproo
         if node.children.empty? || node.fields.present?
           @lines += [['', '', '']]
           @lines += node.fields.inject([]) do |res, field|
-            next res if node.resource.send(field[:accessor]).blank?
+            next res if node.resource&.send(field[:accessor]).blank?
 
             if node.skipped?
               res << ["#{node.prefix}#{field[:name]}", node.resource.send(field[:accessor]).to_s, field[:description]]

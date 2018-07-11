@@ -2,8 +2,8 @@ class GdprClient
   include Singleton
 
   PATHS = {
-    new_report: "#{ENV['GDPR_HOST']}/reports",
-    update_report: "#{ENV['GDPR_HOST']}/reports/{id}",
+    new_report: "#{ENV['GDPR_PORTAL_HOST']}/reports",
+    update_report: "#{ENV['GDPR_PORTAL_HOST']}/reports/{id}",
   }
 
   def create_report(type:, id:, category:)
@@ -21,6 +21,7 @@ class GdprClient
 
   def connection
     Faraday.new do |f|
+      f.use Faraday::Request::Authorization, 'Token', ENV['GDPR_PORTAL_TOKEN']
       f.request :json
       f.response :mashify
       f.response :json, content_type: /\bjson/
