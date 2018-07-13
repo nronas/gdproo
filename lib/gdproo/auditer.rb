@@ -8,8 +8,8 @@ module Gdproo
       @tree_builder = TreeBuilder.new
     end
 
-    def audit(id:)
-      tree = build_tree(id)
+    def audit(id:, id_field: :id)
+      tree = build_tree(id, id_field)
 
       tree.dfs do |node|
         if node.children.empty? || node.fields.present?
@@ -38,9 +38,9 @@ module Gdproo
       @lines
     end
 
-    def build_tree(id)
+    def build_tree(id, id_field)
       if @entity
-        @tree_builder.build(@entity, id)
+        @tree_builder.build(@entity, id, id_field)
       else
         raise 'Unsupported entity'
       end

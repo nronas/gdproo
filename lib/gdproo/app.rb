@@ -43,7 +43,7 @@ module Gdproo
     class AccessRequest
       def call(env)
         data = JSON.parse(env['rack.input'].read)
-        Gdproo::AccessRequestParentWorker.perform_async(data['id'], data['type'], data['report_id'])
+        Gdproo::AccessRequestParentWorker.perform_async(data['id'], data['type'], data['report_id'], data['id_field'])
         [202, {}, {}]
       end
     end
