@@ -1,7 +1,7 @@
 require_relative 'processors/access_request_parent_worker'
 
 module Gdproo
-  class App
+  class Application
     def initialize(builder)
       @builder = builder
       enable_mappigs(@builder)
