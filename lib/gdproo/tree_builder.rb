@@ -10,7 +10,7 @@ module Gdproo
 
     def build(model, id, id_field=:id)
       root = storage.slice(model)
-      resource = root.keys.first.constantize.find_by(id_field =>id)
+      resource = root.keys.first.constantize.where(id_field => id).first
       raise "Failed to build tree for #{model}" if root.nil?
 
       visited = Set.new
