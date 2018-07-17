@@ -17,11 +17,12 @@ module Gdproo
       @store[model.to_s][:fields] << {name: name, accessor: field, description: description}
     end
 
-    def insert_relation(model, has_many:, has_one:, skip:)
+    def insert_relation(model, has_many:, has_one:, skip:, deletable:)
       @store[model.to_s] ||= initial_entry
       @store[model.to_s][:has_many] += has_many
       @store[model.to_s][:has_one] += has_one
       @store[model.to_s][:skip] = skip
+      @store[model.to_s][:deletable] = deletable
     end
 
     def initial_entry
@@ -30,6 +31,7 @@ module Gdproo
         has_many: [],
         fields: [],
         skip: false,
+        deletable: true,
       }
     end
   end

@@ -10,11 +10,12 @@ module Gdproo
   end
 
   module ClassMethods
-    def consent_relations(has_one: [], has_many: [], skip: false)
+    def consent_relations(has_one: [], has_many: [], skip: false, deletable: true)
       Storage.instance.insert_relation(self.to_s,
                                        has_many: has_many,
                                        has_one: has_one,
-                                       skip: skip)
+                                       skip: skip,
+                                       deletable: deletable)
     end
 
     def consent(name:, field:, description:)

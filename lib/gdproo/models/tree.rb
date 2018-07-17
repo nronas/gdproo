@@ -14,6 +14,8 @@ module Gdproo
     end
 
     def <=>(node)
+      return -1 unless node
+
       self.name <=> node.name &&
         self.resource <=> node.resource
     end
@@ -28,6 +30,10 @@ module Gdproo
 
     def skipped?
       @data[@name][:skip]
+    end
+
+    def deletable?
+      !!@data[@name][:deletable]
     end
   end
 
@@ -57,6 +63,15 @@ module Gdproo
             break
           end
         end
+      end
+    end
+
+    def preorder(node: @root, &block)
+      if node
+        node.children.each do |child|
+          preorder(node: child, &block)
+        end
+        yield node
       end
     end
 

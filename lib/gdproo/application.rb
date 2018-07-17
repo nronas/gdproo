@@ -36,6 +36,8 @@ module Gdproo
 
     class LegalHoldDeletion
       def call(env)
+        data = JSON.parse(env['rack.input'].read)
+        Gdproo::LegalHoldWorker.perform_async(data['id'], data['type'], data['report_id'], data['id_field'])
         [202, {}, {}]
       end
     end

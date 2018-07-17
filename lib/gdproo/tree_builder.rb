@@ -28,6 +28,7 @@ module Gdproo
         parent_resource = node.dig(node.keys.first, :resource)
 
         has_one.each do |_node|
+          next unless parent_resource
           puts "Generate child nodes for: #{_node}"
           normalized_name = parent_resource.class.reflect_on_association(_node.to_sym)&.class_name || _node.to_s.camelize
           normalized_name.constantize
@@ -40,6 +41,7 @@ module Gdproo
         end
 
         has_many.each do |_node|
+          next unless parent_resource
           puts "Generate child nodes for: #{_node}"
           normalized_name = parent_resource.class.reflect_on_association(_node.to_sym).class_name || _node.to_s.camelize
           normalized_name.constantize
