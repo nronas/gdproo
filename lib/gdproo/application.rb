@@ -14,7 +14,7 @@ module Gdproo
           password == ENV['GDPR_CLIENT_PASSWORD']
       end
 
-      builder.map '/legal_hold_deletion' do
+      builder.map '/right_to_be_forgotten_request' do
         run LegalHoldDeletion.new
       end
 
@@ -27,7 +27,7 @@ module Gdproo
       def call(env)
         request = Rack::Request.new(env)
         case request.path
-        when '/legal_hold_deletion', '/access_request'
+        when '/right_to_be_forgotten_request', '/access_request'
           super
         else
           @app.call(env)
@@ -37,6 +37,7 @@ module Gdproo
 
     class LegalHoldDeletion
       def call(env)
+        binding.pry
         data = JSON.parse(env['rack.input'].read)
         Gdproo::LegalHoldWorker.perform_async(data['id'], data['type'], data['report_id'], data['id_field'])
         [202, {}, {}]
