@@ -1,4 +1,5 @@
 require_relative 'processors/access_request_parent_worker'
+require_relative 'processors/legal_hold_worker'
 
 module Gdproo
   class Application
