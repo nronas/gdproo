@@ -11,8 +11,6 @@ module Gdproo
       Gdproo::Deleter.new(type).delete(id: id, id_field: id_field)
 
       GdprClient.instance.update_report(type: type, id: id, report_id: report_id, status: :success)
-    rescue => e
-      puts e.backtrace
     end
   end
 end

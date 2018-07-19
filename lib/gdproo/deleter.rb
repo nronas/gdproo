@@ -14,7 +14,7 @@ module Gdproo
         resource = node.resource
         if resource && node.deletable?
           puts "Deleting -> #{node.resource.class}:#{node.resource.id}"
-          resource.delete
+          resource.destroy
           sleep(ENV.fetch('GDPR_DELETER_INTERVAL_SLEEP_WINDOW', 1).to_i)
         end
       end
