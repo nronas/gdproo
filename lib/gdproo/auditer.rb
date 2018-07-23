@@ -13,17 +13,15 @@ module Gdproo
 
       tree.dfs do |node|
         if node.children.empty? || node.fields.present?
-          @lines += [['', '', '']]
           @lines += node.fields.inject([]) do |res, field|
-            next res if node.resource&.send(field[:accessor]).nil?
+            next res if value_for(node.resource, field).nil?
 
             if node.skipped?
-              res << ["#{node.prefix}#{field[:name]}", node.resource.send(field[:accessor]).to_s, field[:description]]
+              res << ["#{node.prefix}#{field[:name]}", value_for(node.resource, field).to_s, field[:description]]
             else
-              res << ["#{node.prefix}#{node.name.split('::').last.underscore}.#{node.resource.id}.#{field[:name]}", node.resource.send(field[:accessor]).to_s, field[:description]]
+              res << ["#{node.prefix}#{node.name.split('::').last.underscore}.#{node.resource.id}.#{field[:name]}", value_for(node.resource, field).to_s, field[:description]]
             end
           end
-          @lines += [['', '', '']]
         end
 
         node.children.each do |child|
@@ -36,6 +34,14 @@ module Gdproo
       end
 
       @lines
+    end
+
+    def value_for(resource, field)
+      if field[:accessor].is_a?(Proc)
+        field[:accessor].call(resource)
+      else
+        resource&.send(field[:accessor])
+      end
     end
 
     def build_tree(id, id_field)
