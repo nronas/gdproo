@@ -26,6 +26,8 @@ class GdprClient
       f.response :mashify
       f.response :json, content_type: /\bjson/
       f.adapter :typhoeus
+      f.options.timemout = ENV.fetch('GDPR_CLIENT_TIMEOUT', 5).to_f
+      f.options.open_timemout = ENV.fetch('GDPR_CLIENT_OPEN_TIMEOUT', 2).to_f
     end
   end
 end
