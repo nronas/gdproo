@@ -13,11 +13,13 @@ class GdprClient
   end
 
   def update_report(type:, id:, report_id:, data: [], status:)
-    payload = { type: type, data: data, status: status }
+    payload = { type: type, data: data, status: status, origin: ENV.fetch('GDPR_SERVICE_NAME', '') }
     response = connection.put(PATHS[:update_report].gsub('{id}', report_id.to_s), report: payload)
 
     raise "Response to GDPR server failed with #{response.status} status code" unless response.success?
   end
+
+  private
 
   def connection
     Faraday.new do |f|
