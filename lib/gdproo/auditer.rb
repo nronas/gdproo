@@ -17,9 +17,9 @@ module Gdproo
             next res if value_for(node.resource, field).nil?
 
             if node.skipped?
-              res << ["#{node.prefix}#{field[:name]}", value_for(node.resource, field).to_s, field[:description]]
+              res << [node.prefix.split('.')[-2], node.prefix.split('.')[-1], field[:name], value_for(node.resource, field).to_s, field[:description]]
             else
-              res << ["#{node.prefix}#{node.name.split('::').last.underscore}.#{node.resource.id}.#{field[:name]}", value_for(node.resource, field).to_s, field[:description]]
+              res << [node.name.split('::').last.underscore, node.resource.id, field[:name], value_for(node.resource, field).to_s, field[:description]]
             end
           end
         end
