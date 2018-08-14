@@ -14,26 +14,28 @@ module Gdproo
       tree.dfs do |node|
         if node.children.empty? || node.fields.present?
           @lines += node.fields.inject([]) do |res, field|
+            next res if node.resource.nil?
             next res if value_for(node.resource, field).nil?
 
-            if node.skipped?
-              res << ["#{node.prefix}#{field[:name]}", value_for(node.resource, field).to_s, field[:description]]
-            else
-              res << ["#{node.prefix}#{node.name.split('::').last.underscore}.#{node.resource.id}.#{field[:name]}", value_for(node.resource, field).to_s, field[:description]]
-            end
-          end
-        end
-
-        node.children.each do |child|
-          child.prefix += node.prefix
-
-          unless node.skipped?
-            child.prefix += "#{node.name.split('::').last.underscore}.#{node.resource.id}."
+            res << data_line_for(node, field)
           end
         end
       end
 
       @lines
+    end
+
+    private
+
+    def data_line_for(node, field)
+      {
+        entity: @entity,
+        service_name: ENV.fetch('GDPR_SERVICE_NAME', ''),
+        name: field[:name],
+        table_name: node.resource.class.table_name,
+        resource_id: node.resource.id,
+        value: value_for(node.resource, field).to_s
+      }
     end
 
     def value_for(resource, field)
